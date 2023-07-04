@@ -99,7 +99,10 @@ export default async function handler(req, res) {
         });
       }
 
-      transcript = transcriptResponse.map((item) => item.text).join(" ");
+      transcript = transcriptResponse
+        .map((item) => item.text)
+        .join(" ")
+        .substring(0, 200);
 
       // const metadata = await getVideoMetaData(videoId);
 
