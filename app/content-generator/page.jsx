@@ -7,15 +7,7 @@ import ResultWithSources from "../components/ResultWithSources";
 import Title from "../components/Title";
 import TwoColumnLayout from "../components/TwoColumnLayout";
 
-/**
- *
- * Module 5: AI Content Generator
- *
- * Use this to create new content from a piece of content!
- *
- */
 const ContentGenerator = () => {
-  // Follw up: Write me a tweet about pedro pascal.
   const [prompt, setPrompt] = useState(
     "https://www.youtube.com/watch?v=O_9JoimRj8w"
   );
@@ -35,10 +27,8 @@ const ContentGenerator = () => {
     setTopic(e.target.value);
   };
 
-  // Make sure to change the API route
   const handleSubmit = async () => {
     try {
-      // Push the user's message into the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: prompt, type: "user", sourceDocuments: null },
@@ -60,7 +50,6 @@ const ContentGenerator = () => {
         throw new Error(searchRes.error);
       }
 
-      // Push the response into the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -79,14 +68,13 @@ const ContentGenerator = () => {
 
   return (
     <>
-      <Title emoji="🧙🏾‍♂️" headingText="AI Content Generator" />
       <TwoColumnLayout
         leftChildren={
           <>
             <PageHeader
-              heading="Automated Content Generator"
-              boldText="Doing your own manual research is so 2022. Let's automate it."
-              description="This tool uses the agents to create a unique video script for you. Head over to Module X to get started!"
+              heading1="Automated Content Generator"
+              heading2="for YouTube Videos"
+              description="This tool uses the agents to create a unique video script for you. "
             />
           </>
         }
