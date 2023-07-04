@@ -119,8 +119,8 @@ export default async function handler(req, res) {
         output: response,
         chatHistory,
         transcript,
-        metadata,
-        research,
+        metadata: "metadataString",
+        research: "research",
       });
     } catch (err) {
       console.error(err);
