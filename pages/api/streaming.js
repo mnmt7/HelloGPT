@@ -1,6 +1,6 @@
 import { OpenAI } from "langchain/llms/openai";
 import SSE from "express-sse";
-
+export const dynamic = "force-dynamic";
 const sse = new SSE();
 
 export default function handler(req, res) {
