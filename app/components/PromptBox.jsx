@@ -8,8 +8,8 @@ const PromptBox = ({
   placeHolderText,
   buttonText,
   error,
-  disableButton,
   labelText,
+  generating,
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -26,22 +26,21 @@ const PromptBox = ({
         )}
 
         <input
+          disabled={generating}
           type="text"
-          value={prompt}
+          value={generating ? "Generating..." : prompt}
           onChange={handlePromptChange}
           onKeyDown={handleKeyDown}
           placeholder={placeHolderText || "Enter your prompt"}
-          className="w-full mr-4 py-2 px-4 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded shadow"
+          className="w-full mr-4 py-2 px-4 text-xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded shadow"
         />
-
-        {!disableButton && (
-          <button
-            onClick={handleSubmit}
-            className={`py-6 px-6 bg-white shadow text-gray-900 font-semibold rounded-full hover:shadow-xl transition-colors duration-200 uppercase ${sourceCodePro.className}`}
-          >
-            {buttonText || "Enter"}
-          </button>
-        )}
+        <button
+          onClick={handleSubmit}
+          className={`py-6 px-6 bg-white shadow text-gray-900 font-semibold rounded-full hover:shadow-xl transition-colors duration-200 uppercase ${sourceCodePro.className}`}
+          disabled={generating}
+        >
+          {buttonText || "Enter"}
+        </button>
       </div>
       <p className={`text-red-500 ${error ? "block" : "hidden"}`}>{error}</p>
     </>
