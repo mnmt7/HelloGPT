@@ -28,7 +28,7 @@ const initChain = async (transcript, metadataString, research, topic) => {
 
     const chatPrompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(
-        "You are a helpful social media assistant that provides research, new content and advice to me. \n You are given a transcript of the video: {transcript} \n "
+        "You are a helpful social media assistant that provides research, new content and advice to me. S\n You are given a transcript of the video: {transcript} \n "
         //and video metadata: {metadata} as well as additional research: {research}"
       ),
       HumanMessagePromptTemplate.fromTemplate(
@@ -36,7 +36,7 @@ const initChain = async (transcript, metadataString, research, topic) => {
       ),
     ]);
 
-    const question = `Write me a script for a new video that provides a commentary on this video in a light hearted, joking manner. It should complement ${topic} with puns`;
+    const question = `Write me a script for a new video that provides a commentary on this video in a light hearted, joking manner. It should complement ${topic} with puns. It should not be more than 100 words.S`;
 
     chain = new LLMChain({
       prompt: chatPrompt,
