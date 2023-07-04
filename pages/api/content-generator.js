@@ -28,10 +28,11 @@ const initChain = async (transcript, metadataString, research, topic) => {
 
     const chatPrompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(
-        "You are a helpful social media assistant that provides research, new content and advice to me. \n You are given a transcript of the video: {transcript} \n and video metadata: {metadata} as well as additional research: {research}"
+        "You are a helpful social media assistant that provides research, new content and advice to me. \n You are given a transcript of the video: {transcript} \n "
+        //and video metadata: {metadata} as well as additional research: {research}"
       ),
       HumanMessagePromptTemplate.fromTemplate(
-        "{input}. Remember to use the video transcript and research as references."
+        "{input}. Remember to use the video transcript references." // and research as well as metadata
       ),
     ]);
 
@@ -100,18 +101,16 @@ export default async function handler(req, res) {
 
       transcript = transcriptResponse.map((item) => item.text).join(" ");
 
-      const metadata = await getVideoMetaData(videoId);
+      // const metadata = await getVideoMetaData(videoId);
 
-      metadataString = JSON.stringify(metadata, null, 2);
+      // metadataString = JSON.stringify(metadata, null, 2);
 
-      research = await ResearchAgent(topic);
-
-      console.log(research);
+      // research = await ResearchAgent(topic);
 
       const response = await initChain(
         transcript,
-        metadataString,
-        research,
+        "metadataString",
+        "research",
         topic
       );
 
