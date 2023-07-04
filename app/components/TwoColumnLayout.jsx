@@ -1,7 +1,7 @@
 import React from "react";
 
 const TwoColumnLayout = ({ leftChildren, rightChildren }) => (
-  <div className="flex flex-col justify-between  md:flex-row">
+  <div className="flex flex-col justify-between  md:flex-row py-20">
     {/* Description */}
     <div className="md:w-2/5 w-full">{leftChildren}</div>
     {/* Chat */}
