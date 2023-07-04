@@ -8,6 +8,7 @@ import ResultWithSources from "../components/ResultWithSources";
 import "../globals.css";
 
 export default function page() {
+  const [generating, setGenerating] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState("");
   const [messages, setMessages] = useState([
@@ -20,6 +21,7 @@ export default function page() {
 
   const handleSubmit = async () => {
     try {
+      setGenerating(true);
       const response = await fetch("/api/memory", {
         method: "POST",
         headers: {
@@ -34,8 +36,6 @@ export default function page() {
 
       const searchRes = await response.json();
 
-      console.log(searchRes);
-
       setIsFirstMessage(false);
       setPrompt("");
       setMessages((prevMessages) => [
@@ -46,6 +46,8 @@ export default function page() {
       setError("");
     } catch (err) {
       console.log(err);
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -55,13 +57,12 @@ export default function page() {
 
   return (
     <>
-      <Title headingText="Memory" emoji="🧠" />
       <TwoColumnLayout
         leftChildren={
           <>
             <PageHeader
-              heading="I remember everything"
-              boldText="Let's see if it can remember whatever information you provide"
+              heading1="Memory"
+              heading2="Let's see if it can remember whatever information you provide"
               description="This tool uses Buffer Memory and Conversation Chain to remember whatever you provide."
             />
           </>
@@ -70,6 +71,7 @@ export default function page() {
           <>
             <ResultWithSources messages={messages} pngFile="brain" />
             <PromptBox
+              generating={generating}
               prompt={prompt}
               handleSubmit={handleSubmit}
               placeholderText="Type here..."
