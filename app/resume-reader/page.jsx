@@ -12,7 +12,8 @@ import Button from "../components/Button";
 const endpoint = "/api/resume-query-metadata";
 
 const ResumeReader = () => {
-  const [prompt, setPrompt] = useState("Who has experience with Python?");
+  const [generating, setGenerating] = useState(false);
+  const [prompt, setPrompt] = useState("Who has worked at Coinbase?");
   const [error, setError] = useState(null);
 
   const [messages, setMessages] = useState([
@@ -27,7 +28,6 @@ const ResumeReader = () => {
   };
   const handleSubmitUpload = async () => {
     try {
-      // Push the response into the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -45,7 +45,6 @@ const ResumeReader = () => {
 
       console.log({ transcriptRes });
 
-      // assuming transcriptRes is an object
       const summariesArray = JSON.parse(transcriptRes.output);
 
       const newMessages = summariesArray.map((summary) => ({
@@ -64,13 +63,13 @@ const ResumeReader = () => {
 
   const handleSubmit = async () => {
     try {
-      // Push the user's message into the messages array
+      setGenerating(true);
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: prompt, type: "user", sourceDocuments: null },
       ]);
 
-      // set loading message
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: "...", type: "bot", sourceDocuments: null },
@@ -87,10 +86,8 @@ const ResumeReader = () => {
       const searchRes = await response.json();
       console.log({ searchRes });
 
-      // remove loading message
       setMessages((prevMessages) => prevMessages.slice(0, -1));
 
-      // Push the response into the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -103,19 +100,20 @@ const ResumeReader = () => {
     } catch (err) {
       console.error(err);
       setError(err);
+    } finally {
+      setGenerating(false);
     }
   };
 
   return (
     <>
       <>
-        <Title emoji="🤖" headingText="RoboHR" />
         <TwoColumnLayout
           leftChildren={
             <>
               <PageHeader
-                heading="Your personal HR assistant"
-                boldText="Get information on a whole lot of documents."
+                heading1="RoboHR"
+                heading2="Your personal HR assistant"
                 description="This tool uses Document Loaders, OpenAI Embeddings, Summarization Chain, Pinecone, VectorDB QA Chain, Prompt Templates, and the Vector Store Agent."
               />
 
@@ -138,6 +136,7 @@ const ResumeReader = () => {
                 handleSubmit={handleSubmit}
                 error={error}
                 placeHolderText={"Enter Prompt"}
+                generating={generating}
               />
             </>
           }
