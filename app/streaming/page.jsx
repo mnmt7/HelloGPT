@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import PageHeader from "../components/PageHeader";
 import PromptBox from "../components/PromptBox";
 import ResultStreaming from "../components/ResultStreaming";
-import Title from "../components/Title";
 import TwoColumnLayout from "app/components/TwoColumnLayout";
 
 const Streaming = () => {
+  const [generating, setGenerating] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState(null);
   const [data, setData] = useState("");
@@ -22,7 +22,7 @@ const Streaming = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log(`sending prompt: ${prompt}`);
+      setGenerating(true);
       await fetch("/api/streaming", {
         method: "POST",
         headers: {
@@ -50,10 +50,11 @@ const Streaming = () => {
     } catch (err) {
       console.error(err);
       setError(error);
+    } finally {
+      setGenerating(false);
     }
   };
 
-  // Clean up the EventSource on component unmount
   useEffect(() => {
     return () => {
       if (source) {
@@ -64,15 +65,10 @@ const Streaming = () => {
 
   return (
     <>
-      <Title emoji="💭" headingText="Streaming" />
       <TwoColumnLayout
         leftChildren={
           <>
-            <PageHeader
-              heading="Spit a Rap."
-              boldText="Nobody likes waiting for APIs to load. Use streaming to improve the user experience of chat bots."
-              description="This tutorial uses streaming.  Head over to Module X to get started!"
-            />
+            <PageHeader heading1="Streaming" heading2="Spit a Rap." />
           </>
         }
         rightChildren={
@@ -85,6 +81,7 @@ const Streaming = () => {
               placeHolderText={"Enter your name and city"}
               error={error}
               pngFile="pdf"
+              generating={generating}
             />
           </>
         }
