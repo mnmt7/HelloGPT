@@ -36,7 +36,7 @@ const initChain = async (transcript, metadataString, research, topic) => {
       ),
     ]);
 
-    const question = `Write me a script for a new video that provides a commentary on this video in a light hearted, joking manner. It should complement ${topic}. It should not be more than 500 characters.`;
+    const question = `Write me a script for a new video that provides a commentary on this video in a light hearted, joking manner. It should complement ${topic}. It should not be more than 1000 characters.`;
 
     chain = new LLMChain({
       prompt: chatPrompt,
