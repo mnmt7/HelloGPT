@@ -21,7 +21,7 @@ const MessageItem = ({ message, pngFile, isLast }) => {
           />
         </div>
         <p
-          className={message.type === "user" ? "user" : "bot"}
+          className={`${message.type === "user" ? "user" : "bot"} text-xl`}
           style={{ maxWidth: "90%" }}
         >
           {message.text}
