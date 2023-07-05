@@ -7,6 +7,8 @@ import { PineconeClient } from "@pinecone-database/pinecone";
 import { loadSummarizationChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
 
+import { Document } from "langchain/document";
+
 import formidable from "formidable";
 
 import path from "path";
@@ -16,11 +18,70 @@ export const config = {
   },
 };
 
+async function loadPDF(pdfPath) {
+  const loader = new PDFLoader(pdfPath);
+
+  const docs = await loader.load();
+
+  if (docs.length === 0) {
+    console.log("No documents found");
+    return;
+  }
+
+  const splitter = new CharacterTextSplitter({
+    separator: " ",
+    chunkSize: 250,
+    chunkOverlap: 10,
+  });
+
+  const splitDocs = await splitter.splitDocuments(docs);
+
+  const reducedDocs = splitDocs.map((doc) => {
+    const reducedMetadata = { ...doc.metadata };
+    delete reducedMetadata.pdf;
+    return new Document({
+      pageContent: doc.pageContent,
+      metadata: reducedMetadata,
+    });
+  });
+
+  const client = new PineconeClient();
+
+  await client.init({
+    apiKey: process.env.PINECONE_API_KEY,
+    environment: process.env.PINECONE_ENVIRONMENT,
+  });
+
+  const pineconeIndex = client.Index(process.env.PINECONE_INDEX);
+
+  await PineconeStore.fromDocuments(reducedDocs, new OpenAIEmbeddings(), {
+    pineconeIndex,
+  });
+}
+
 export default async function handler(req, res) {
   try {
     const { fields, files } = await readFile(req);
 
-    console.log(files);
+    // console.log(files);
+    let i = 0;
+
+    // console.log(files[`pdfFiles[${0}]`]);
+
+    while (files[`pdfFiles[${i}]`]) {
+      const file = files[`pdfFiles[${i}]`][0];
+      // console.log(file);
+
+      const filePath = file.filepath;
+      console.log(filePath);
+
+      // console.log(" filePath ", filePath);
+
+      await loadPDF(filePath);
+      i++;
+    }
+
+    return res.status(200).json({ result: "success" });
 
     const loader = new DirectoryLoader("/tmp", {
       ".pdf": (path) => new PDFLoader(path, "/pdf"),
