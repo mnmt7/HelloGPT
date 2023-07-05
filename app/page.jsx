@@ -28,6 +28,69 @@ export default function Home() {
             </Link>
           </li>
           <li>
+            <Link href="video-chat">
+              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
+                <div className="absolute inset-0">
+                  <Image
+                    src="/assets/images/youtube.png"
+                    alt="robot reading newspaper"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                    className="transform transition-transform hover:scale-105"
+                  />
+                </div>
+              </div>
+              <p
+                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
+              >
+                YT Vid Chat
+              </p>
+            </Link>
+          </li>
+          <li>
+            <Link href="resume-reader">
+              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
+                <div className="absolute inset-0">
+                  <Image
+                    src="/assets/images/robohr.png"
+                    alt="robot reading newspaper"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                    className="transform transition-transform hover:scale-105"
+                  />
+                </div>
+              </div>
+              <p
+                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
+              >
+                RoboHR
+              </p>
+            </Link>
+          </li>
+          <li>
+            <Link href="content-generator">
+              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
+                <div className="absolute inset-0">
+                  <Image
+                    src="/assets/images/wizard.png"
+                    alt="robot reading newspaper"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                    className="transform transition-transform hover:scale-105"
+                  />
+                </div>
+              </div>
+              <p
+                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
+              >
+                Content Wiz
+              </p>
+            </Link>
+          </li>
+          <li>
             <Link href="/memory">
               <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
                 <div className="absolute inset-0">
@@ -66,69 +129,6 @@ export default function Home() {
                 className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
               >
                 Streaming
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link href="video-chat">
-              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
-                <div className="absolute inset-0">
-                  <Image
-                    src="/assets/images/youtube.png"
-                    alt="robot reading newspaper"
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                    className="transform transition-transform hover:scale-105"
-                  />
-                </div>
-              </div>
-              <p
-                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
-              >
-                YT Vid Chat
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link href="content-generator">
-              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
-                <div className="absolute inset-0">
-                  <Image
-                    src="/assets/images/wizard.png"
-                    alt="robot reading newspaper"
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                    className="transform transition-transform hover:scale-105"
-                  />
-                </div>
-              </div>
-              <p
-                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
-              >
-                Content Wiz
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link href="resume-reader">
-              <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
-                <div className="absolute inset-0">
-                  <Image
-                    src="/assets/images/robohr.png"
-                    alt="robot reading newspaper"
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                    className="transform transition-transform hover:scale-105"
-                  />
-                </div>
-              </div>
-              <p
-                className={`text-2xl text-center font-bold text-black ${sourceCodePro.className}`}
-              >
-                RoboHR
               </p>
             </Link>
           </li>
