@@ -5,60 +5,125 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { CharacterTextSplitter } from "langchain/text_splitter";
 
-// Example: https://js.langchain.com/docs/modules/indexes/document_loaders/examples/file_loaders/pdf
+import formidable from "formidable";
+
+import path from "path";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req, res) {
-  if (req.method === "GET") {
-    console.log("Inside the PDF handler");
-    // Enter your code here
-    /** STEP ONE: LOAD DOCUMENT */
-    const bookPath =
-      "/home/mnmt/dev/langchain/openai-javascript-course/data/document_loaders/naval-ravikant-book.pdf";
-    const loader = new PDFLoader(bookPath);
+  console.log("Inside the PDF handler");
 
-    const docs = await loader.load();
+  const { fields, files } = await readFile(req);
 
-    if (docs.length === 0) {
-      console.log("No documents found");
-      return;
-    }
+  const bookPath = files.pdfFile[0].filepath;
+  const loader = new PDFLoader(bookPath);
 
-    const splitter = new CharacterTextSplitter({
-      separator: " ",
-      chunkSize: 250,
-      chunkOverlap: 10,
-    });
+  const docs = await loader.load();
 
-    const splitDocs = await splitter.splitDocuments(docs);
-
-    const reducedDocs = splitDocs.map((doc) => {
-      const reducedMetadata = { ...doc.metadata };
-      delete reducedMetadata.pdf;
-      return new Document({
-        pageContent: doc.pageContent,
-        metadata: reducedMetadata,
-      });
-    });
-
-    console.log("Reduced docs", reducedDocs);
-
-    /** STEP TWO: UPLOAD TO DATABASE */
-
-    const client = new PineconeClient();
-
-    await client.init({
-      apiKey: process.env.PINECONE_API_KEY,
-      environment: process.env.PINECONE_ENVIRONMENT,
-    });
-
-    const pineconeIndex = client.Index(process.env.PINECONE_INDEX);
-
-    await PineconeStore.fromDocuments(reducedDocs, new OpenAIEmbeddings(), {
-      pineconeIndex,
-    });
-
-    // upload documents to Pinecone
-    return res.status(200).json({ result: reducedDocs });
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
+  if (docs.length === 0) {
+    console.log("No documents found");
+    return;
   }
+
+  const splitter = new CharacterTextSplitter({
+    separator: " ",
+    chunkSize: 250,
+    chunkOverlap: 10,
+  });
+
+  const splitDocs = await splitter.splitDocuments(docs);
+
+  const reducedDocs = splitDocs.map((doc) => {
+    const reducedMetadata = { ...doc.metadata };
+    delete reducedMetadata.pdf;
+    return new Document({
+      pageContent: doc.pageContent,
+      metadata: reducedMetadata,
+    });
+  });
+
+  const client = new PineconeClient();
+
+  await client.init({
+    apiKey: process.env.PINECONE_API_KEY,
+    environment: process.env.PINECONE_ENVIRONMENT,
+  });
+
+  const pineconeIndex = client.Index(process.env.PINECONE_INDEX);
+
+  await PineconeStore.fromDocuments(reducedDocs, new OpenAIEmbeddings(), {
+    pineconeIndex,
+  });
+
+  return res.status(200).json({ result: reducedDocs });
 }
+
+const readFile = (req, saveLocally) => {
+  const options = {};
+
+  if (saveLocally) {
+    options.uploadDir = path.join(process.cwd(), "/public/uploads");
+    options.filename = (name, ext, path, form) => {
+      const fileName = Date.now().toString() + "-" + name + ext;
+      return fileName;
+    };
+  }
+
+  const form = formidable(options);
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) return reject(err);
+      resolve({ fields, files });
+    });
+  });
+};
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+
+// const upload = multer({ storage: storage });
+
+// const apiRoute = nextConnect({
+//   onError(error, req, res) {
+//     res
+//       .status(501)
+//       .json({ error: `Sorry something Happened! ${error.message}` });
+//   },
+//   onNoMatch(req, res) {
+//     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
+//   },
+// });
+
+// apiRoute.use(upload.single("pdfFile"));
+
+// apiRoute.post(handler);
+
+// export default apiRoute;
+
+// export default async function handler(req, res) {
+//   // try {
+//   //   await fs.readdir(path.join(process.cwd(), "/public", "/uploads"));
+//   // } catch (err) {
+//   //   await fs.mkdir(path.join(process.cwd(), "/public", "/uploads"));
+//   // }
+
+//   const { fields, files } = await readFile(req);
+
+//   console.log(files.pdfFile[0]);
+//   console.log(files.pdfFile[0].filepath);
+
+//   res.json({
+//     fields,
+//   });
+// }
