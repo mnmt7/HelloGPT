@@ -5,8 +5,6 @@ import PageHeader from "../components/PageHeader";
 import PromptBox from "../components/PromptBox";
 import TwoColumnLayout from "../components/TwoColumnLayout";
 import ResultWithSources from "../components/ResultWithSources";
-import ButtonContainer from "../components/ButtonContainer";
-import Button from "../components/Button";
 import { useDropzone } from "react-dropzone";
 
 const endpoint = "/api/resume-query-metadata";
@@ -113,7 +111,9 @@ const ResumeReader = () => {
 
     try {
       const formData = new FormData();
-      formData.append("pdfFile", file);
+      acceptedFiles.forEach((file, index) => {
+        formData.append(`pdfFiles[${index}]`, file);
+      });
 
       const response = await fetch("/api/resume-upload", {
         method: "POST",
