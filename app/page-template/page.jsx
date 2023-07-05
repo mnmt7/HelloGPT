@@ -5,7 +5,6 @@ import ResultWithSources from "../components/ResultWithSources";
 import PromptBox from "../components/PromptBox";
 import Button from "../components/Button";
 import PageHeader from "../components/PageHeader";
-import Title from "../components/Title";
 import TwoColumnLayout from "../components/TwoColumnLayout";
 import ButtonContainer from "../components/ButtonContainer";
 import "../globals.css";

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import PageHeader from "../components/PageHeader";
 import PromptBox from "../components/PromptBox";
 import ResultWithSources from "../components/ResultWithSources";
-import Title from "../components/Title";
 import TwoColumnLayout from "../components/TwoColumnLayout";
 
 const ContentGenerator = () => {

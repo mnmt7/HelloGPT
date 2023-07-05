@@ -2,7 +2,6 @@
 import { useState } from "react";
 import PageHeader from "../components/PageHeader";
 import PromptBox from "../components/PromptBox";
-import Title from "../components/Title";
 import TwoColumnLayout from "../components/TwoColumnLayout";
 import ResultWithSources from "../components/ResultWithSources";
 import "../globals.css";
