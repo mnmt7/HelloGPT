@@ -1,13 +1,3 @@
-// /pages/api/resume_upload.js
-// Import dependencies
-
-/**
- * This endpoint is used to load the resumes into the chain, then upload them to the Pinecone database.
- * Tutorial: https://js.langchain.com/docs/modules/indexes/document_loaders/examples/file_loaders/directory
- * Summarization: https://js.langchain.com/docs/modules/chains/other_chains/summarization
- * Dependencies: npm install pdf-parse
- */
-
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { CharacterTextSplitter } from "langchain/text_splitter";
@@ -17,23 +7,28 @@ import { PineconeClient } from "@pinecone-database/pinecone";
 import { loadSummarizationChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
 
+import formidable from "formidable";
+
+import path from "path";
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req, res) {
-  // Grab the prompt from the url (?prompt=[value])
-  //   console.log(process.env.PINECONE_API_KEY);
-  //   console.log(process.env.PINECONE_ENVIRONMENT);
-  //   console.log(process.env.PINECONE_INDEX);
-  // Always use a try catch block to do asynchronous requests and catch any errors
   try {
-    const loader = new DirectoryLoader(
-      "/home/mnmt/dev/langchain/openai-javascript-course/data/resumes",
-      {
-        ".pdf": (path) => new PDFLoader(path, "/pdf"),
-      }
-    );
+    const { fields, files } = await readFile(req);
+
+    console.log(files);
+
+    const loader = new DirectoryLoader("/tmp", {
+      ".pdf": (path) => new PDFLoader(path, "/pdf"),
+    });
 
     const docs = await loader.load();
 
-    // console.log("Loaded", docs.length, "documents");
+    console.log("Loaded", docs.length, "documents");
 
     const splitter = new CharacterTextSplitter({
       separator: "\n",
@@ -107,3 +102,23 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: err });
   }
 }
+
+const readFile = (req, saveLocally) => {
+  const options = {};
+
+  if (saveLocally) {
+    options.uploadDir = path.join(process.cwd(), "/public/uploads");
+    options.filename = (name, ext, path, form) => {
+      const fileName = Date.now().toString() + "-" + name + ext;
+      return fileName;
+    };
+  }
+
+  const form = formidable(options);
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) return reject(err);
+      resolve({ fields, files });
+    });
+  });
+};
