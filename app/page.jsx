@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-11/12 m-auto my-6">
+    <div className="w-11/12 m-auto my-6 max-w-7xl">
       <div className="rounded-3xl px-8 py-4 shadow-2xl">
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 uppercase place-content-center">
           <li>
