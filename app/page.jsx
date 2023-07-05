@@ -111,7 +111,7 @@ export default function Home() {
               </p>
             </Link>
           </li>
-          <li>
+          <li className="hidden">
             <Link href="streaming">
               <div className="rounded-xl overflow-hidden drop-shadow h-72 max-w-xs mx-auto">
                 <div className="absolute inset-0">
