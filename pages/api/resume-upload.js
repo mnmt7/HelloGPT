@@ -93,18 +93,16 @@ export default async function handler(req, res) {
     const summaryStr = JSON.stringify(summaries, null, 2);
 
     return res.status(200).json({ output: summaryStr });
-
-    return;
   } catch (err) {
-    // If we have an error
-
     console.error(err);
     return res.status(500).json({ error: err });
   }
 }
 
 const readFile = (req, saveLocally) => {
-  const options = {};
+  const options = {
+    multiples: true,
+  };
 
   if (saveLocally) {
     options.uploadDir = path.join(process.cwd(), "/public/uploads");
