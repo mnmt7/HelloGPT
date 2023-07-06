@@ -35,18 +35,36 @@ const Streaming = () => {
         source.close();
       }
 
+      //
+
       const newSource = new EventSource("/api/streaming");
       setSource(newSource);
+      newSource.onmessage = (event) => {
+        console.log(event);
+        const str = event.data;
+        const token = processToken(str);
 
-      newSource.addEventListener("newToken", (event) => {
-        const token = processToken(event.data);
-        console.log(event.data);
+        if (token === "end") {
+          newSource.close();
+          return;
+        }
+
         setData((prevData) => prevData + token);
-      });
+      };
 
-      newSource.addEventListener("end", (event) => {
-        newSource.close();
-      });
+      //
+
+      // const newSource = new EventSource("/api/streaming");
+      // setSource(newSource);
+
+      // newSource.addEventListener("newToken", (event) => {
+      //   const token = processToken(event.data);
+      //   setData((prevData) => prevData + token);
+      // });
+
+      // newSource.addEventListener("end", (event) => {
+      //   newSource.close();
+      // });
     } catch (err) {
       console.error(err);
       setError(error);
@@ -78,7 +96,7 @@ const Streaming = () => {
               prompt={prompt}
               handlePromptChange={handlePromptChange}
               handleSubmit={handleSubmit}
-              placeHolderText={"Enter your name and city"}
+              placeHolderText={"[Name of Rapper, Rap Topic]"}
               error={error}
               pngFile="pdf"
               generating={generating}
