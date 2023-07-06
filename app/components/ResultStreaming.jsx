@@ -2,10 +2,10 @@ import React from "react";
 
 const ResultStreaming = ({ data }) => {
   return (
-    <div className="bg-gray-100 p-6 rounded shadow mb-4">
+    <div className="bg-gray-100 border-solid border-2 border-black p-6 rounded shadow mb-4">
       {/* If data is a string */}
       {typeof data === "string" && (
-        <pre className="text-black-500 mb-4">{data}</pre>
+        <pre className="text-black-500 mb-4 whitespace-pre-wrap">{data}</pre>
       )}
       {/* If data is an object */}
       {data && <p className="text-black-500 mb-4">{data?.output}</p>}
