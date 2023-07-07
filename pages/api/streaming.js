@@ -16,9 +16,9 @@ export default async function handler(req, res) {
       "Transfer-Encoding": "chunked",
     });
 
-    let responseStream = new TransformStream();
-    const writer = responseStream.writable.getWriter();
-    const encoder = new TextEncoder();
+    // let responseStream = new TransformStream();
+    // const writer = responseStream.writable.getWriter();
+    // const encoder = new TextEncoder();
 
     // Initialize model
     const llm = new OpenAI({
@@ -71,6 +71,6 @@ export default async function handler(req, res) {
   }
 }
 
-// export const config = {
-//   runtime: "edge",
-// };
+export const config = {
+  runtime: "edge",
+};
