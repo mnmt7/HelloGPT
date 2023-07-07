@@ -21,15 +21,39 @@ const Streaming = () => {
   };
 
   const handleSubmit = async () => {
+    const response = await fetch("/api/streaming");
+    const stream = response.body;
+    const reader = stream.getReader();
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+
+        const decodedValue = new TextDecoder().decode(value);
+
+        const token = processToken(decodedValue);
+        setData((prevData) => prevData + token);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      reader.releaseLock();
+    }
+  };
+
+  const handleSubmit_ = async () => {
     try {
       setGenerating(true);
-      await fetch("/api/streaming", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ input: prompt }),
-      });
+      // await fetch("/api/streaming", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ input: prompt }),
+      // });
 
       if (source) {
         source.close();
