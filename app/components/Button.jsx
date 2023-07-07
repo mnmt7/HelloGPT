@@ -6,10 +6,9 @@ const Button = ({ color, handleSubmit, endpoint, buttonText }) => {
     blue: "bg-blue-500 hover:bg-blue-600",
     green: "bg-green-500 hover:bg-green-600",
     pink: "bg-pink-500 hover:bg-pink-600",
-    // Add more colors as needed
   };
 
-  const colorClass = colorClasses[color] || "bg-white hover:bg-white"; // Default to blue if color prop not recognized
+  const colorClass = colorClasses[color] || "bg-white hover:bg-white";
 
   return (
     <button

@@ -79,7 +79,6 @@ const ContentGenerator = () => {
         }
         rightChildren={
           <>
-            {/* Added max messages */}
             <ResultWithSources
               messages={messages}
               pngFile="wizard"
