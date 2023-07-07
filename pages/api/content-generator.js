@@ -156,7 +156,6 @@ export default async function handler(req, res) {
         content: response.text,
       });
 
-      // just make sure to modify this response as necessary.
       return res.status(200).json({
         output: response,
         metadata: metadataString,

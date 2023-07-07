@@ -1,10 +1,3 @@
-/**
- * This endpoint is used to load the resumes into the chain, then upload them to the Pinecone database.
- * Tutorial: https://js.langchain.com/docs/modules/indexes/document_loaders/examples/file_loaders/directory
- * Summarization: https://js.langchain.com/docs/modules/chains/other_chains/summarization
- * Dependencies: npm install pdf-parse
- */
-
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { PineconeClient } from "@pinecone-database/pinecone";

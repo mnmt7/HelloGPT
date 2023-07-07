@@ -4,7 +4,6 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenAI } from "langchain/llms/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 
-// Example: https://js.langchain.com/docs/modules/indexes/document_loaders/examples/file_loaders/pdf
 export default async function handler(req, res) {
   try {
     if (req.method !== "POST") {
@@ -21,8 +20,6 @@ export default async function handler(req, res) {
     }
 
     console.log("input received:", input);
-
-    /* Use as part of a chain (currently no metadata filters) */
 
     // Initialize Pinecone
     const client = new PineconeClient();

@@ -1,4 +1,3 @@
-// /pages/api/transcript.js
 import { YoutubeTranscript } from "youtube-transcript";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
@@ -11,7 +10,6 @@ import { OpenAI } from "langchain";
 let chain;
 let chatHistory = [];
 
-// DO THIS SECOND
 const initializeChain = async (initialPrompt, transcript) => {
   try {
     const model = new ChatOpenAI({
@@ -40,7 +38,6 @@ const initializeChain = async (initialPrompt, transcript) => {
       content: response.text,
     });
 
-    // console.log({ chatHistory });
     return response;
   } catch (error) {
     console.error(error);
@@ -87,8 +84,6 @@ export default async function handler(req, res) {
           .status(500)
           .json({ error: "An error occurred while fetching transcript" });
       }
-
-      // do this third!
     } else {
       try {
         console.log("Received question");
@@ -108,11 +103,8 @@ export default async function handler(req, res) {
           content: response.text,
         });
 
-        // console.log({ response });
-
         return res.status(200).json({ output: response, chatHistory });
       } catch (error) {
-        // Generic error handling
         console.error(error);
         res
           .status(500)
