@@ -35,6 +35,9 @@ const Streaming = () => {
         const decodedValue = new TextDecoder().decode(value);
 
         const token = processToken(decodedValue);
+
+        console.log(token);
+
         setData((prevData) => prevData + token);
       }
     } catch (err) {
